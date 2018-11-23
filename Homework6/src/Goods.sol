@@ -12,6 +12,7 @@ contract Goods{
         uint index;
     }
 
+    uint length = 0; // All goods count
     uint[] goodIndexes;  // All updated goods indexes
     mapping(uint => Good) goodLists;  // All updated goods
 
@@ -28,6 +29,7 @@ contract Goods{
 
         // New goods info
         uint len = goodIndexes.length;
+        length += 1;
         goodIndexes.push(len+1);
         goodLists[len+1] = Good(addr, name, realInfos, descri, price, now, len+1);
         return (true, "");
@@ -41,6 +43,7 @@ contract Goods{
                 uint pri = goodLists[index].price;
                 delete goodIndexes[i];
                 delete goodLists[index];
+                length -= 1;
                 return (true, add, pri);
             }
         }
@@ -48,12 +51,13 @@ contract Goods{
     }
 
     // Get all goods infos
-    function getTargetGoods(uint order) public constant returns (Good target, uint trueID){
-        return (goodLists[goodIndexes[order]], goodIndexes[order]);
+    function getTargetGoods(uint order) public returns (address addr, string name, string real, string dest, uint pri, uint trueID){
+        Good temp = goodLists[goodIndexes[order]];
+        return (temp.sellerAddr, temp.name, temp.realTranscatInfos, temp.description, temp.price,  goodIndexes[order]);
     }
 
     function getLength() public constant returns (uint len){
-        return goodIndexes.length;
+        return length;
     }
 
 
