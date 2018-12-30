@@ -1,0 +1,1 @@
+./geth.exe --datadir eth --ethash.dagdir "store" --networkid 1377278217 --rpc --rpccorsdomain "*" --port 16333 --rpcport 8545 console
